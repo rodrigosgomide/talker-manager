@@ -24,9 +24,7 @@ async function writeNewTalkerData(talker) {
 
 async function editTalkerData(talkerId, body) {
     const data = await readTalkerData();
-    console.log(body);
     const newInfo = { id: Number(talkerId), ...body };
-    console.log(newInfo);
     const newData = data.map((talker) => {
         if (talker.id === Number(talkerId)) return newInfo;
         return talker;
@@ -36,9 +34,17 @@ async function editTalkerData(talkerId, body) {
     return newInfo;
 }
 
+async function deleteTalkerData(talkerId) {
+    const data = await readTalkerData();
+    const newData = data.filter((t) => t.id !== Number(talkerId));
+    const talkers = JSON.stringify(newData);
+    await fs.writeFile(path.resolve(__dirname, '../talker.json'), talkers);
+}
+
 module.exports = {
     readTalkerData,
     getTalkerById,
     writeNewTalkerData,
     editTalkerData,
+    deleteTalkerData,
 };
