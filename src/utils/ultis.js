@@ -13,7 +13,17 @@ async function getTalkerById(id) {
     return talker;
 }
 
+async function writeTalkerData(talker) {
+    const data = await readTalkerData();
+    const newTalker = { ...talker, id: data.length + 1 };
+    data.push(newTalker);
+    const talkers = JSON.stringify(data);
+    await fs.writeFile(path.resolve(__dirname, '../talker.json'), talkers);
+    return newTalker;
+}
+
 module.exports = {
     readTalkerData,
     getTalkerById,
+    writeTalkerData,
 };
