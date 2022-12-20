@@ -22,12 +22,12 @@ function validateWatchedAt(talk) {
 }
 
 function rateIsBetween(rate) {
-    return rate >= 1 && rate <= 5;
+    return Number.isInteger(rate) && rate >= 1 && rate <= 5;
 }
 
 function validateRate(talk) {
-    if (!talk.rate || talk.rate.length === 0) throw new Error(errorMensages.emptyRate);
-    if (!Number.isInteger(talk.rate) || !rateIsBetween(talk.rate)) {
+    if (!talk.rate && talk.rate !== 0) throw new Error(errorMensages.emptyRate);
+    if (!rateIsBetween(talk.rate)) {
         throw new Error(errorMensages.rateFormat);
     }
 }

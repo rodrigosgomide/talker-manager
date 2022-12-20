@@ -1,5 +1,5 @@
 const express = require('express');
-const { readTalkerData, getTalkerById, writeTalkerData } = require('../utils/ultis');
+const { readTalkerData, getTalkerById, writeNewTalkerData, editTalkerData } = require('../utils/ultis');
 const validateTalker = require('../middleware/validateTalker');
 const validateToken = require('../middleware/validateToken');
 
@@ -18,8 +18,15 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', validateToken, validateTalker, async (req, res) => {
-  const newTalker = await writeTalkerData(req.body);
+  const newTalker = await writeNewTalkerData(req.body);
   return res.status(201).json(newTalker);
 });
+
+router.put('/:id', validateToken, validateTalker, async (req, res) => {
+    const { id } = req.params;
+    const { body } = req;
+    const newTalker = await editTalkerData(id, body);
+    return res.status(200).json(newTalker);
+  });
 
 module.exports = router;
